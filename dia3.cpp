@@ -55,8 +55,15 @@ int main(){
     int opcao;
     do {
         exibirMenu();
-        cin >> opcao;
-        
+        while (!(cin >> opcao)) {
+            //Tratamento de exceção para letras:
+            cout << "Entrada invalida! Por favor, digite um numero (1-7)." << endl;
+            // 2. Limpa o "estado de falha" do cin
+            cin.clear(); 
+            // 3. Descarta a linha inválida que está no buffer
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            cout << "Escolha uma opcao: ";
+		}
         // Limpa o buffer do cin para evitar problemas com getline
         cin.ignore(numeric_limits<streamsize>::max(), '\n');
         switch (opcao) {
@@ -78,7 +85,7 @@ int main(){
             case 6:
                 gravarArquivo(vetor, n_elementos_vetor);
                 break;
-            case 0:
+            case 7:
                 cout << "Saindo do programa. Alteracoes nao salvas (se existirem) serao perdidas." << endl;
                 break;
             default:
@@ -86,7 +93,7 @@ int main(){
                 break;
         }
 
-    } while (opcao != 0);
+    } while (opcao != 7);
     delete[] vetor;
     return 0;
 }
@@ -109,7 +116,7 @@ void adicionar_elementos(Frutas*& vetor, int& capacidade){
 void carregar(Frutas*& vetor, int& n_elementos, int& capacidade){
     fstream arquivo("frutastropicais.csv");
     if (!arquivo.is_open()) {
-        cerr << "Erro: Nao foi possivel abrir o arquivo frutastropicais.csv" << endl;
+        cout << "Erro: Nao foi possivel abrir o arquivo frutastropicais.csv" << endl;
         return;
     }
 
@@ -185,7 +192,7 @@ void exibirMenu(){
     cout << "4. Mostrar dados" << endl;
     cout << "5. Ordenar dados" << endl;
     cout << "6. Salvar alteracoes no arquivo" << endl;
-    cout << "0. Sair" << endl;
+    cout << "7. Sair" << endl;
     cout << "Escolha uma opcao: ";
 }
 
@@ -370,3 +377,4 @@ void quickSortPorNome(Frutas* vetor, int inicio, int fim){
         quickSortPorNome(vetor, pi + 1, fim);
     }
 }
+

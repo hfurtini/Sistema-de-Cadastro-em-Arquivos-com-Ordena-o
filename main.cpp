@@ -8,7 +8,7 @@
  * - Cadastro de Frutas Tropicais
  */
 #include <iostream>
-#include <fstream>
+#include <fstream> // do arquivo CSV
 #include <string>
 #include <sstream> //Melhoria na manipulação do arquivo csv
 #include <limits>  //Limpeza de buffer e memória
@@ -56,6 +56,7 @@ int main(){
     Frutas* vetor = new Frutas[capacidade_total];
     // Chama a função de carga
     carregar(vetor, n_elementos_vetor, capacidade_total);
+    // Definicao de variavel para escolha de função
     int opcao;
     string salvarsaida;
     do {
@@ -140,7 +141,6 @@ void carregar(Frutas*& vetor, int& n_elementos, int& capacidade){
 
     string linha;
     getline(arquivo, linha);   // Pula a linha 1
-    getline(arquivo, linha);   // Pula a linha 2
 
     // Loop principal: lê uma linha inteira de cada vez
     while(getline(arquivo, linha)){
@@ -190,7 +190,7 @@ void gravarArquivo(Frutas* vetor, int n_elementos){
     }
 
     // Escreve a linha 1 como no arquivo original
-    arquivo << "#ID,Nome da Fruta,Continente de Origem,Calorias (aprox. por 100g),Coloracao\n100\n";
+    arquivo << "#ID,Nome da Fruta,Continente de Origem,Calorias (aprox. por 100g),Coloracao\n";
     for (int i = 0; i < n_elementos; i++){
         arquivo << vetor[i].id << ","
                 << vetor[i].nome << ","
@@ -204,6 +204,7 @@ void gravarArquivo(Frutas* vetor, int n_elementos){
 
 
 void exibirMenu(){
+    //Exibe menu para UX
     cout << "\n---- SISTEMA DE CADASTRO DE FRUTAS ----" << endl;
     cout << "1. Inserir nova fruta" << endl;
     cout << "2. Remover fruta (por ID)" << endl;
@@ -352,7 +353,7 @@ void ordenarDados(Frutas* vetor, int n_elementos, string& ordenadoPor){
     cout << "2. Nome" << endl;
     cout << "Opção: ";
     cin >> ordenar;
-
+    //Opções de ordenação e tratamento de exceção
     if (ordenar == 1){
         quickSortPorId(vetor, 0, n_elementos - 1);
         ordenadoPor = "id";
